@@ -29,7 +29,7 @@
                     <TextBlock Grid.Column="0" Style="{StaticResource WindowName}" Text="Окно Авторизации"/>
                     <TextBlock Grid.Row="1" Style="{StaticResource WindowName}" Text="{Binding Status}"/>
                     <Button Grid.Column="2" x:Name="MinimizeWindow" Style="{StaticResource minimiseButton}" Click="MinimiseWindow"/>
-                    <Button Grid.Column="3" x:Name="btnCloseWindow" Style="{StaticResource closeButton}" Click="CloseWindow"/>
+                    <Button Grid.Column="3" x:Name="btnCloseWindow" Style="{StaticResource closeButton}" Click="CloseWindow" Command="{Binding DisconectComand}"/>
                 </Grid>
 
                 <Grid Grid.Row="1">
@@ -48,8 +48,8 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Row="1" Text="Login" Style="{StaticResource WindowName}" Margin="40 0 0 0 "/>
-                        <TextBox Grid.Row="2" Style="{StaticResource LoginTextBox}"/>
-                        <TextBlock Grid.Row="3" Text="{Binding LoginCheck}" Style="{StaticResource WindowName}" Margin="40 0 0 0 "/>
+                        <TextBox Grid.Row="2" x:Name="loginTextBox" Style="{StaticResource LoginTextBox}" Text="{Binding Login, Mode=OneWay}"/>
+                        <TextBlock Grid.Row="3" x:Name="loginCheck" Text="{Binding LoginCheck}" Style="{StaticResource WindowName}" Margin="40 0 0 0 "/>
                     </Grid>
 
                     <Grid Grid.Row="1">
@@ -61,11 +61,21 @@
                             <RowDefinition Height="50"/>
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Row="1" Text="Password" Style="{StaticResource WindowName}" Margin="40 0 0 0 "/>
-                        <PasswordBox Grid.Row="2" Style="{StaticResource PasswordBox}"/>
-                        <TextBlock Grid.Row="3" Text="{Binding PasswordCheck}" Style="{StaticResource WindowName}" Margin="40 0 0 0 "/>
+                        <PasswordBox Grid.Row="2" x:Name="passwordBox"  Style="{StaticResource PasswordBox}" PasswordChanged="PasswordChanged"/>
+                        <TextBlock Grid.Row="3" x:Name="passwordCheck" Text="{Binding PasswordCheck}" Style="{StaticResource WindowName}" Margin="40 0 0 0 "/>
+                        <Grid Grid.Row="4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Style="{StaticResource WindowName}" x:Name="LogText" Text="Вход" HorizontalAlignment="Right" Margin="0 0 10 0" Foreground="{StaticResource Color.LightGreen}"/>
+                            <ToggleButton Grid.Column="1" x:Name="loginMode" Style="{StaticResource ToggleButtonStyle}" IsChecked="True" Click="loginMode_Click" Command="{Binding SignInUp}"/>
+                            <TextBlock Grid.Column="2" Style="{StaticResource WindowName}" x:Name="RegText" Text="Регист." HorizontalAlignment="Left"/>
+                        </Grid>
                     </Grid>
 
-                    <Button Grid.Row="2" Content="Вперед!" Style="{StaticResource OperationButton}"/>
+                    <Button Grid.Row="2" Content="Вперед!" Style="{StaticResource OperationButton}" Click="Button_Click" Command="{Binding SendMessageComand}"/>
                 </Grid>
             </Grid>
         </Border>
