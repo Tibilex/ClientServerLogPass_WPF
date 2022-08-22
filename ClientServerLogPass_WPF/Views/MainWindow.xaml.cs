@@ -20,9 +20,22 @@ namespace ClientServerLogPass_WPF
     /// </summary>
     public partial class MainWindow : Window
     {
+        private static MainWindow s_window;
         public MainWindow()
         {
             InitializeComponent();
+            s_window = this;
         }
+
+        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (Mouse.LeftButton == MouseButtonState.Pressed)
+            {
+                MainWindow.s_window.DragMove();
+            }
+        }
+
+        private void CloseWindow(object sender, EventArgs e) { Application.Current.Shutdown(); }
+        private void MinimiseWindow(object sender, EventArgs e) { this.WindowState = WindowState.Minimized; }
     }
 }
