@@ -16,11 +16,11 @@ namespace ClientServerLogPass_WPF.ViewModels
         private string _passwordCheck;
         private string _login;
         private string _pasword;
+        private bool _signInUpSwitcher;
         private ClientModel _client;
         private Socket _clientSocket;
-        private static List<int> _portList = new List<int> {8081, 7021, 8084, 6504, 3436};
         private string _ip = "127.0.0.1";
-        private Random _random;
+        private int _port = 8088;
 
         public string Status
         {
@@ -47,21 +47,23 @@ namespace ClientServerLogPass_WPF.ViewModels
             get => _pasword;
             set { _pasword = value; OnPropertyChanged("Password"); }
         }
+        public bool SignInUpSwitcher { get; set; }
         public RelayCommand SendMessageComand { get; private set; }
         public RelayCommand DisconectComand { get; private set; }
+        public RelayCommand SignInUpSwitcherComand { get; private set; }
+        public RelayCommand LoginComand { get; private set; }
 
         public ClientViewModel()
         {
-            _random = new Random();
             SendMessageComand = new RelayCommand(obj => ConnectingMode());
             DisconectComand = new RelayCommand(obj => CloseServerConnection());
-            //ConnectingToServer();
+            ConnectingToServer();
         }
 
         private void ConnectingToServer()
         {
             _clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            _clientSocket.Connect(new IPEndPoint(IPAddress.Parse(_ip), _portList[_random.Next(0, 5)]));
+            _clientSocket.Connect(new IPEndPoint(IPAddress.Parse(_ip), _port));
         }
 
         private void CloseServerConnection()
@@ -81,7 +83,38 @@ namespace ClientServerLogPass_WPF.ViewModels
             ClientModel client = new ClientModel();
             client.Email = Login;
             client.Password = Password;
-            
+            client.Ip = _ip;
+            client.Port = _port;
+            if (SignInUpSwitcher)
+            {
+                client.IsLogin = true;
+                SendDataToServer(client);
+                //Recive();
+            }
+            if (!SignInUpSwitcher)
+            {
+                client.IsRegister = true;
+                SendDataToServer(client);
+                //Recive();
+            }
+        }
+  
+        private void Recive()
+        {
+            int bytes = 0;
+            byte[] buffer = new byte[1024];
+            StringBuilder builder = new StringBuilder();
+            do
+            {
+                bytes = _clientSocket.Receive(buffer);
+                builder.Append(Encoding.Unicode.GetString(buffer, 0, bytes));
+            } while (_clientSocket.Available > 0);
+            string message = builder.ToString();
+            if (message == "Уже зарегестрирован") { LoginCheck = "Уже зарегестрирован";}
+            else { PasswordCheck = "Успешно зарегестрирован"; }
+            if (message == "Успешный вход") { LoginCheck = "Успешный вход"; }
+            else { PasswordCheck = "Пароль не верен"; }
+
         }
     }
 }

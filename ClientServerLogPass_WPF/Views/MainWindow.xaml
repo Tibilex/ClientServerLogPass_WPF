@@ -48,7 +48,7 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Row="1" Text="Login" Style="{StaticResource WindowName}" Margin="40 0 0 0 "/>
-                        <TextBox Grid.Row="2" x:Name="loginTextBox" Style="{StaticResource LoginTextBox}" Text="{Binding Login, Mode=OneWay}"/>
+                        <TextBox Grid.Row="2" x:Name="loginTextBox" Style="{StaticResource LoginTextBox}" Text="{Binding Login}"/>
                         <TextBlock Grid.Row="3" x:Name="loginCheck" Text="{Binding LoginCheck}" Style="{StaticResource WindowName}" Margin="40 0 0 0 "/>
                     </Grid>
 
@@ -70,7 +70,7 @@
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Style="{StaticResource WindowName}" x:Name="LogText" Text="Вход" HorizontalAlignment="Right" Margin="0 0 10 0" Foreground="{StaticResource Color.LightGreen}"/>
-                            <ToggleButton Grid.Column="1" x:Name="loginMode" Style="{StaticResource ToggleButtonStyle}" IsChecked="True" Click="loginMode_Click" Command="{Binding SignInUp}"/>
+                            <ToggleButton Grid.Column="1" x:Name="loginMode" Style="{StaticResource ToggleButtonStyle}" IsChecked="{Binding SignInUpSwitcher}" Click="loginMode_Click" Command="{Binding SignInUp}"/>
                             <TextBlock Grid.Column="2" Style="{StaticResource WindowName}" x:Name="RegText" Text="Регист." HorizontalAlignment="Left"/>
                         </Grid>
                     </Grid>
